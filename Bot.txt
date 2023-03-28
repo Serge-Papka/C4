@@ -1,0 +1,85 @@
+pip3 install pyTelegramBotAPI
+--------
+"""API (Application programming interface) — это набор публичных свойств и методов для взаимодействия с другими программами, которые могут быть написаны даже на другом языке программирования. API можно определить как: «Ко мне можно обращаться так и так, я обязуюсь делать то и это»."""
+https://baconipsum.com/api/?type=all-meat&paras=3&start-with-lorem=1&format=html
+--------      get  -------------
+import requests
+
+r = requests.get(
+    'https://baconipsum.com/api/?type=all-meat&paras=3&start-with-lorem=1&format=html')  # делаем запрос на сервер по переданному адресу
+print(r.content)
+#b'<p>Bacon ipsum dolor amet ham ball tip shankle, filet mignon jerky landjaeger porchetta shank pig turkey alcatra swine tri-tip ham hock andouille.  Bacon capicola sausage burgdoggen.  Filet mignon fatback ball tip salami.  Ham ham hock boudin tenderloin cow prosciutto bacon.</p>\n<p>Beef ribs chislic turducken andouille.  Prosciutto ham hock tail turkey doner pork loin jowl tongue jerky.  Short ribs alcatra kevin, chislic venison pig jowl pork loin ribeye ball tip spare ribs cupim.  Boudin tri-tip buffalo, flank salami shoulder tail.</p>\n<p>Chicken kevin pork chop fatback strip steak tail cupim frankfurter flank ball tip.  Jowl drumstick biltong, swine leberkas pork loin pancetta shank ribeye strip steak.  Pork chop pancetta chicken meatloaf picanha kielbasa.  Shoulder corned beef chislic bacon venison brisket.  Spare ribs turducken pancetta, picanha bresaola leberkas biltong ham hock chislic burgdoggen drumstick rump.</p>\n'
+print(r.status_code)  # узнаем статус полученного ответа 200
+
+
+---------
+---------       json     -----------
+
+
+import requests
+
+r = requests.get('https://baconipsum.com/api/?type=meat-and-filler')  # попробуем поймать json-ответ
+print(r.content) #  b'["In bacon shank burgdoggen, doner laboris fatback id andouille chislic bresaola qui et.  Voluptate frankfurter ut meatball pancetta anim in.  Leberkas proident dolor, et exercitation aliqua ground round fatback kevin.  Hamburger anim in pork culpa, ad turducken pork loin sausage tongue.","Meatloaf eiusmod nostrud velit officia cillum hamburger mollit dolore.  Doner ribeye shankle tongue boudin aliqua.  Kielbasa burgdoggen ut laborum, bresaola doner qui tri-tip.  Nulla biltong ex eiusmod mollit dolor cupim fugiat buffalo lorem commodo rump.  Cow porchetta venison eu labore.  Enim alcatra burgdoggen laboris ham filet mignon.  Cow in beef drumstick dolore shoulder, shankle buffalo nisi doner.","Turkey anim drumstick cillum pancetta chuck sunt.  Aliquip officia proident beef ham hock duis.  Kevin boudin lorem doner, nostrud turkey nisi duis velit tempor.  Ad prosciutto consequat sirloin officia capicola, andouille porchetta kevin dolore kielbasa laborum chislic minim chicken.  Ex tail strip steak ullamco tempor reprehenderit ut velit cillum in commodo shoulder pork belly biltong.  Andouille hamburger irure nostrud short ribs capicola tail venison pig.  Aliquip cupim est ball tip, bresaola ribeye cow jerky mollit hamburger reprehenderit tenderloin pork eiusmod.","Eiusmod enim fatback sausage, burgdoggen qui non eu voluptate shankle boudin.  Rump sunt landjaeger shank pancetta venison excepteur tongue tri-tip hamburger meatloaf ipsum.  Nisi prosciutto id meatloaf exercitation ball tip veniam reprehenderit hamburger filet mignon pariatur ex tri-tip picanha pancetta.  Porchetta swine leberkas meatball deserunt, capicola qui reprehenderit prosciutto dolore lorem brisket officia chicken.  Filet mignon ut frankfurter anim eiusmod ea velit ipsum consectetur ham hock capicola non aute dolore picanha.","Doner ribeye est, porchetta pork loin pork tempor consectetur eiusmod meatball boudin id in t-bone reprehenderit.  Short ribs ex exercitation shankle qui salami shank, boudin shoulder ham hock beef ribs doner andouille alcatra fatback.  Tri-tip aute alcatra chuck.  Chuck id qui quis chicken deserunt ex et incididunt dolore esse proident ham tongue.  Adipisicing biltong mollit leberkas corned beef, tempor quis lorem labore ball tip aliquip ut."]'
+-------
+import requests
+import json  # импортируем необходимую библиотеку
+r = requests.get('https://baconipsum.com/api/?type=meat-and-filler')
+
+texts = json.loads(r.content)  # делаем из полученных байтов Python-объект для удобной работы
+
+print(type(texts))  # проверяем тип сконвертированных данных
+for text in texts:  # выводим полученный текст. Но для того чтобы он влез в консоль, оставим только первые 50 символов.
+    print(text[:50], '\n')
+""" <class 'list'>
+Mollit turducken landjaeger filet mignon kevin, cu
+
+Pork chop buffalo fugiat nisi prosciutto corned be
+
+Ullamco adipisicing cupim beef ribs deserunt paria
+
+Flank nulla et lorem, hamburger pastrami cupidatat
+
+Salami tri-tip velit, flank consequat nostrud bris """
+-------
+import requests
+import json
+r = requests.get('https://api.github.com')
+
+d = json.loads(r.content)  # делаем из полученных байтов Python-объект для удобной работы
+
+print(type(d))
+print(d['following_url'])  # обращаемся к полученному объекту как к словарю и попробуем напечатать одно из его значений
+#<class 'dict'>
+#https://api.github.com/user/following{/target}
+#В зависимости от вида полученного ответа от сервера JSON-функция сама будет обрабатывать его и возвращать нужный нам объект (список или словарь)
+
+---------
+---------             post          --------------
+
+import requests
+
+r = requests.post('https://httpbin.org/post', data = {'key':'value'})  # отправляем POST-запрос
+print(r.content)  # содержимое ответа и его обработка происходит так же, как и с GET-запросами, разницы никакой нет
+#b'{\n  "args": {}, \n  "data": "", \n  "files": {}, \n  "form": {\n    "key": "value"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate", \n    "Content-Length": "9", \n    "Content-Type": "application/x-www-form-urlencoded", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.28.2", \n    "X-Amzn-Trace-Id": "Root=1-6422b32d-79f2f0c5251d1b28274dafe1"\n  }, \n  "json": null, \n  "origin": "31.42.196.42", \n  "url": "https://httpbin.org/post"\n}\n'
+--------
+import requests
+import json
+data = {'key': 'value'}
+r = requests.post('https://httpbin.org/post', json=json.dumps(data))  # отправляем POST-запрос, но только в этот раз тип передаваемых данных будет JSON
+print(r.content)
+#b'{\n  "args": {}, \n  "data": "\\"{\\\\\\"key\\\\\\": \\\\\\"value\\\\\\"}\\"", \n  "files": {}, \n  "form": {}, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate", \n    "Content-Length": "22", \n    "Content-Type": "application/json", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.28.2", \n    "X-Amzn-Trace-Id": "Root=1-6422b3c5-58da8c213d1c7a1245225079"\n  }, \n  "json": "{\\"key\\": \\"value\\"}", \n  "origin": "31.42.196.42", \n  "url": "https://httpbin.org/post"\n}\n'
+----------
+---------- Behold, the power of Requests:
+import requests
+r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
+r.status_code
+# 200
+r.headers['content-type']
+# 'application/json; charset=utf8'
+r.encoding
+# 'utf-8'
+r.text
+# '{"type":"User"...'
+r.json()
+# {'private_gists': 419, 'total_private_repos': 77, ...}
+
